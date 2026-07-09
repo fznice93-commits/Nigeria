@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>尼日利亚本地化人物资产库分析报告</title>
+  <style>
+    :root {
+      --bg:#f6f4ef; --paper:#ffffff; --ink:#1d2533; --muted:#667085; --line:#e3ded5;
+      --green:#176b58; --brown:#8a5a2b; --indigo:#2a4f9a; --gold:#c98a18;
+      --soft-green:#eaf5ef; --soft-gold:#fff4dc; --soft-indigo:#edf1ff; --soft-brown:#f5eee6;
+      --shadow:0 18px 46px rgba(29,37,51,.08);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;line-height:1.62}
+    .page{max-width:1280px;margin:0 auto;padding:28px 22px 58px}
+    .hero{min-height:360px;border-radius:20px;padding:36px;color:#fff;background:linear-gradient(135deg,#10231f 0%,#176b58 54%,#27385e 100%);box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;position:relative}
+    .hero:after{content:"";position:absolute;right:-95px;top:-90px;width:300px;height:300px;border:1px solid rgba(255,255,255,.16);border-radius:50%}
+    .eyebrow{display:inline-flex;width:fit-content;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.14);color:rgba(255,255,255,.9);font-size:13px;margin-bottom:16px}
+    h1{margin:0;max-width:900px;font-size:clamp(34px,5vw,58px);line-height:1.08;letter-spacing:0}
+    .hero p{max-width:850px;margin:16px 0 0;color:rgba(255,255,255,.86);font-size:16px}
+    .meta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+    .meta{padding:9px 12px;border:1px solid rgba(255,255,255,.18);border-radius:10px;background:rgba(255,255,255,.11);color:rgba(255,255,255,.88);font-size:13px}
+    section{margin-top:28px}
+    .section-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;margin-bottom:14px}
+    .section-head p{max-width:690px;color:var(--muted);font-size:14px;margin:0}
+    .eyebrow-dark{color:var(--green)!important;font-weight:760;font-size:12px!important;letter-spacing:.05em;margin:0 0 5px!important}
+    h2{margin:0;font-size:26px;line-height:1.22;letter-spacing:0}
+    h3{margin:0 0 10px;font-size:18px;line-height:1.32;letter-spacing:0}
+    .grid{display:grid;gap:16px} .grid-4{grid-template-columns:repeat(4,minmax(0,1fr))} .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))} .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .panel,.kpi,.sample-card,.feature-card,.conclusion-panel,.module-banner{background:var(--paper);border:1px solid var(--line);border-radius:15px;box-shadow:0 10px 24px rgba(29,37,51,.04)}
+    .panel{padding:18px}.module-banner{padding:22px;background:#fff}.module-banner h2{font-size:30px}.module-banner p:last-child{margin:8px 0 0;color:var(--muted);max-width:920px}.context-panel{margin-bottom:16px} .kpi{padding:18px} .kpi .num{font-size:34px;font-weight:760;line-height:1} .kpi .label{color:var(--muted);font-size:13px;margin-top:6px}
+    .stats-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:16px;margin-top:16px}
+    .stats-panel{background:var(--paper);border:1px solid var(--line);border-radius:15px;box-shadow:0 10px 24px rgba(29,37,51,.04);padding:18px}
+    .stats-table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border:1px solid var(--line);border-radius:12px;font-size:14px}
+    .stats-table th,.stats-table td{padding:10px 12px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center}
+    .stats-table th{background:#faf8f3;color:#3b4656;font-weight:760}.stats-table td{background:#fff;color:#344054}.stats-table tr:last-child th,.stats-table tr:last-child td{border-bottom:none}.stats-table th:last-child,.stats-table td:last-child{border-right:none}
+    .stats-table.compact th,.stats-table.compact td{text-align:left}
+    .research-grid{display:grid;grid-template-columns:1fr 1.35fr;gap:16px;margin-top:16px}
+    .chart-card{background:var(--paper);border:1px solid var(--line);border-radius:15px;box-shadow:0 10px 24px rgba(29,37,51,.04);padding:18px}
+    .chart-card h3{font-size:17px;margin:0 0 12px}.chart-card p{margin:0;color:var(--muted);font-size:13.5px}
+    .donut-wrap{display:flex;align-items:center;gap:16px}.donut{width:154px;aspect-ratio:1;border-radius:50%;position:relative;flex:0 0 auto;background:var(--line)}
+    .donut:after{content:attr(data-total);position:absolute;inset:34px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;text-align:center;font-size:20px;font-weight:760;color:var(--ink);white-space:pre-line;line-height:1.05}
+    .donut.source{background:conic-gradient(var(--green) 0 3.65%, var(--gold) 3.65% 7.30%, var(--indigo) 7.30% 94.66%, var(--brown) 94.66% 100%)}
+    .legend{display:grid;gap:7px;font-size:13px;color:#3d4758}.legend span{display:flex;align-items:center;gap:8px}.legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
+    .bar-list{display:grid;gap:10px}.bar-row{display:grid;grid-template-columns:82px 1fr auto;gap:10px;align-items:center;font-size:13px;color:#3d4758}.bar-track{height:11px;border-radius:999px;background:#f1eee8;overflow:hidden}.bar-fill{height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--green),var(--gold));width:var(--w)}
+    .source-table{margin-top:14px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.source-table div{border:1px solid var(--line);border-radius:11px;background:#faf8f3;padding:9px;text-align:center}.source-table b{display:block;font-size:18px}.source-table span{font-size:12px;color:var(--muted)}
+    .callout{border-radius:15px;padding:18px;border:1px solid #c5e7dc;background:var(--soft-green)}
+    .callout p{margin:6px 0 0;color:#24463d}
+    .sample-type-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    .sample-card{overflow:hidden} .sample-images{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line)}
+    .sample-thumb{aspect-ratio:1/1;background:#f8f6f0} .sample-thumb img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+    .sample-body{padding:14px} .sample-body p{margin:0;color:var(--muted);font-size:14px}
+    .feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    .feature-subhead{grid-column:1/-1;border:1px solid var(--line);border-radius:14px;background:#fff;padding:15px 16px;color:#3b4656}
+    .feature-subhead h3{margin:0 0 5px;font-size:17px}.feature-subhead p{margin:0;color:var(--muted);font-size:14px}
+    .feature-card{overflow:hidden;display:flex;flex-direction:column} .feature-image{height:286px;background:#f8f6f0;display:flex;align-items:center;justify-content:center}
+    .feature-image img{width:100%;height:100%;object-position:var(--pos,center);display:block} .feature-image.cover img{object-fit:cover} .feature-image.contain img{object-fit:contain}
+    .feature-image.dual{display:grid;grid-template-columns:1fr 1fr;gap:1px;padding:0;background:var(--line);align-items:stretch;justify-content:stretch}
+    .feature-image.dual figure{margin:0;position:relative;min-width:0;background:#f8f6f0;overflow:hidden}
+    .feature-image.dual img{width:100%;height:100%;object-fit:cover;object-position:var(--pos,center);display:block}
+    .feature-image.dual figcaption{position:absolute;left:8px;bottom:8px;padding:3px 8px;border-radius:999px;background:rgba(29,37,51,.74);color:#fff;font-size:12px;line-height:1.2}
+    .feature-image.dual .placeholder-slot{height:100%;display:flex;align-items:center;justify-content:center;padding:18px;text-align:center;color:var(--muted);font-size:13px;line-height:1.55;background:#fbfaf7}
+    .feature-image.triple{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;padding:0;background:var(--line);height:320px;align-items:stretch;justify-content:stretch}
+    .feature-image.triple figure{margin:0;position:relative;min-width:0;background:#f8f6f0;overflow:hidden}
+    .feature-image.triple img{width:100%;height:100%;object-fit:contain;object-position:center;display:block}
+    .feature-image.triple figcaption{position:absolute;left:8px;bottom:8px;padding:3px 8px;border-radius:999px;background:rgba(29,37,51,.74);color:#fff;font-size:12px;line-height:1.2}
+    .feature-body{padding:14px 14px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+    .tag-row{display:flex;flex-wrap:wrap;gap:7px} .tag{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:12px;white-space:nowrap}
+    .tag.green{background:var(--soft-green);color:#125847} .tag.gold{background:var(--soft-gold);color:#815505} .tag.indigo{background:var(--soft-indigo);color:#254b9f} .tag.brown{background:var(--soft-brown);color:#744719}
+    .feature-note,.evidence-caption{margin:0;font-size:13.5px;color:#3d4758} .evidence-caption{color:#5f6878}
+    .conclusion-card{margin-top:auto;border-radius:12px;padding:10px 11px;background:#faf8f3;border:1px solid var(--line);font-size:13px;color:#374151}
+    .placeholder-card .feature-image{background:#fbfaf7}
+    .dimension-summary{margin-top:14px;border-radius:14px;padding:15px 16px;background:#fff;border:1px solid var(--line);color:#3b4656}
+    .matrix{display:grid;grid-template-columns:1fr 1fr 1fr;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+    .matrix>div{padding:13px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)} .matrix>div:nth-child(3n){border-right:none} .matrix .head{background:#faf8f3;color:var(--muted);font-weight:700}
+    .conclusion-panel{padding:18px} .conclusion-panel ul{margin:8px 0 0;padding-left:18px;color:var(--muted)} .conclusion-panel li{margin:6px 0}
+    .skin-reference-module{grid-column:1/-1;background:var(--paper);border:1px solid var(--line);border-radius:15px;box-shadow:0 10px 24px rgba(29,37,51,.04);padding:18px}
+    .skin-reference-module>p{margin:0 0 14px;color:var(--muted);font-size:14px;max-width:980px}
+    .skin-reference-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .skin-reference-card{border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 8px 18px rgba(29,37,51,.04);overflow:hidden}
+    .skin-reference-image{background:#fbfaf7;padding:10px;border-bottom:1px solid var(--line)}
+    .skin-reference-image img{width:100%;height:520px;object-fit:contain;display:block}
+    .skin-reference-body{padding:14px}.skin-reference-body h4{margin:0 0 7px;font-size:16px;line-height:1.35}.skin-reference-body p{margin:0;color:var(--muted);font-size:13.5px}
+    .footer{margin-top:34px;color:var(--muted);text-align:center;font-size:13px}
+    @media(max-width:980px){.grid-4,.grid-3,.grid-2,.stats-grid,.research-grid,.sample-type-grid,.feature-grid,.skin-reference-grid{grid-template-columns:1fr}.matrix{grid-template-columns:1fr}.matrix>div{border-right:none}.hero{min-height:300px;padding:24px}.section-head{display:block}.section-head p{margin-top:8px}.feature-image{height:260px}.skin-reference-image img{height:auto;max-height:620px}}
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="eyebrow">Nigeria Localized Model Feature Atlas</div>
+      <h1>尼日利亚本地化人物资产库分析报告</h1>
+      <p>基于 KOL、普罗大众、广告模特三类样本，按“结构性特征”和“文化性特征”两大模块，建立“典型特征 — 图片证据 — 结论判断”的对应关系。</p>
+      <div class="meta-row">
+        <div class="meta">研究对象：Nigeria / Lagos 优先观察</div>
+        <div class="meta">样本类型：KOL、普罗大众、广告模特</div>
+        <div class="meta">分析框架：结构性特征 / 文化性特征</div>
+        <div class="meta">输出目标：观点归纳 / 图片归档 / 特征判断 / 本地化审美校准</div>
+      </div>
+    </header>
+
+    <section>
+      <div class="section-head"><div><p class="eyebrow-dark">Research Base</p><h2>图库体量与研究结论</h2></div><p>本报告基于对尼日利亚人物图库共 1124 张图片的盘点，其中按来源可确认 KOL / 明星 41 张、普罗大众 41 张、广告模特 / 商业参考 982 张，并包含 60 张混合证据与页面导出辅助素材。图库覆盖社媒人物、生活化街头样本和商业视觉样本三类人群。</p></div>
+      <div class="grid grid-4">
+        <div class="kpi"><div class="num">1124</div><div class="label">图库图片总量</div></div>
+        <div class="kpi"><div class="num">41</div><div class="label">KOL / 明星素材</div></div>
+        <div class="kpi"><div class="num">41</div><div class="label">普罗大众素材</div></div>
+        <div class="kpi"><div class="num">982</div><div class="label">广告模特 / 商业参考</div></div>
+      </div>
+      <div class="research-grid">
+        <div class="chart-card">
+          <h3>人群来源占比</h3>
+          <div class="donut-wrap">
+            <div class="donut source" data-total="1124&#10;张"></div>
+            <div class="legend">
+              <span><i style="background:var(--green)"></i>KOL / 明星：41</span>
+              <span><i style="background:var(--gold)"></i>普罗大众：41</span>
+              <span><i style="background:var(--indigo)"></i>广告模特 / 商业参考：982</span>
+              <span><i style="background:var(--brown)"></i>混合证据 / 页面资源：60</span>
+            </div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h3>七个子项证据图数量</h3>
+          <div class="bar-list">
+            <div class="bar-row"><span>五官</span><div class="bar-track"><div class="bar-fill" style="--w:67%"></div></div><b>12</b></div>
+            <div class="bar-row"><span>发型</span><div class="bar-track"><div class="bar-fill" style="--w:67%"></div></div><b>12</b></div>
+            <div class="bar-row"><span>皮肤</span><div class="bar-track"><div class="bar-fill" style="--w:100%"></div></div><b>18</b></div>
+            <div class="bar-row"><span>身材体型</span><div class="bar-track"><div class="bar-fill" style="--w:33%"></div></div><b>6</b></div>
+            <div class="bar-row"><span>妆容</span><div class="bar-track"><div class="bar-fill" style="--w:6%"></div></div><b>1</b></div>
+            <div class="bar-row"><span>服饰</span><div class="bar-track"><div class="bar-fill" style="--w:94%"></div></div><b>17</b></div>
+            <div class="bar-row"><span>配饰</span><div class="bar-track"><div class="bar-fill" style="--w:33%"></div></div><b>6</b></div>
+          </div>
+          <div class="source-table"><div><b>53</b><span>特征卡片</span></div><div><b>74</b><span>证据图</span></div><div><b>7</b><span>分析子项</span></div><div><b>2</b><span>核心模块</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><div><p class="eyebrow-dark">Background</p><h2>项目背景与分析方法</h2></div><p>PDF 的核心问题是：AI 生图在本地化审美上缺乏标准，容易生成“不对味”的尼日利亚人物，因此需要用真实样本建立可复核的人物形象框架。</p></div>
+      <div class="grid grid-2">
+        <div class="panel"><h3>为什么从 Lagos 切入</h3><p>Lagos 集中体现尼日利亚的时尚、美妆、音乐、影视和社媒审美。它既有都市商业人物，也有 KOL、娱乐、街头生活和传统视觉符号，因此可作为第一阶段观察入口。</p></div>
+        <div class="panel"><h3>样本与维度</h3><p>样本按明星/KOL、普罗大众、广告模特三类组织，并进行男女分组观察。两大模块分别记录结构性特征（五官、发型、皮肤、身材）与文化性特征（妆容、服饰、配饰）。</p></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><div><p class="eyebrow-dark">Sample Map</p><h2>样本来源图谱</h2></div><p>样本来源图谱展示 KOL / 明星、普罗大众、广告模特三类人群的实际视觉差异：KOL 更精致，普罗大众更生活化，广告模特更标准化。</p></div>
+      <div class="sample-type-grid"><article class="sample-card">
+      <div class="sample-images"><div class="sample-thumb"><img src="assets/images/sample-kol-male-04.jpg" alt="KOL / 明星男性"></div><div class="sample-thumb"><img src="assets/images/sample-kol-male-05.jpg" alt="KOL / 明星男性"></div><div class="sample-thumb"><img src="assets/images/sample-kol-male-06.jpg" alt="KOL / 明星男性"></div><div class="sample-thumb"><img src="assets/images/sample-kol-male-01.jpg" alt="KOL / 明星男性"></div><div class="sample-thumb"><img src="assets/images/sample-kol-male-07.jpg" alt="KOL / 明星男性"></div><div class="sample-thumb"><img src="assets/images/sample-kol-male-03.jpg" alt="KOL / 明星男性"></div></div>
+      <div class="sample-body"><h3>KOL / 明星男性</h3><p>公众人物样本更偏社媒化与造型完整，发型、胡须、服装和拍摄姿态都更受控。男性样本中可观察到短发、胡须、墨镜、皮衣或西装等更强的形象管理。</p></div>
+    </article><article class="sample-card">
+      <div class="sample-images"><div class="sample-thumb"><img src="assets/images/sample-public-male-01.jpg" alt="普罗大众男性"></div><div class="sample-thumb"><img src="assets/images/sample-public-male-02.jpg" alt="普罗大众男性"></div><div class="sample-thumb"><img src="assets/images/sample-public-male-03.png" alt="普罗大众男性"></div><div class="sample-thumb"><img src="assets/images/sample-public-male-04.png" alt="普罗大众男性"></div><div class="sample-thumb"><img src="assets/images/sample-public-male-05.jpg" alt="普罗大众男性"></div><div class="sample-thumb"><img src="assets/images/sample-public-male-06.jpg" alt="普罗大众男性"></div></div>
+      <div class="sample-body"><h3>普罗大众男性</h3><p>普罗大众男性样本更生活化，服装、姿态和摄影环境保留了街头、市场或新闻现场的自然状态。相较广告模特，表情和构图更少精修控制。</p></div>
+    </article><article class="sample-card">
+      <div class="sample-images"><div class="sample-thumb"><img src="assets/images/sample-ad-male-01.jpg" alt="广告模特男性"></div><div class="sample-thumb"><img src="assets/images/sample-ad-male-02.jpg" alt="广告模特男性"></div><div class="sample-thumb"><img src="assets/images/sample-ad-male-04.jpg" alt="广告模特男性"></div><div class="sample-thumb"><img src="assets/images/sample-ad-male-05.jpg" alt="广告模特男性"></div><div class="sample-thumb"><img src="assets/images/sample-ad-male-06.jpg" alt="广告模特男性"></div><div class="sample-thumb"><img src="assets/images/sample-ad-male-03.jpg" alt="广告模特男性"></div></div>
+      <div class="sample-body"><h3>广告模特男性</h3><p>广告男性样本更标准化，常与手机、现金、App 机制或金融服务信息同框。表情和动作更明确，骨相与发型也更容易被商业化整理。</p></div>
+    </article><article class="sample-card">
+      <div class="sample-images"><div class="sample-thumb"><img src="assets/images/sample-kol-female-04.jpg" alt="KOL / 明星女性"></div><div class="sample-thumb"><img src="assets/images/sample-kol-female-05.jpg" alt="KOL / 明星女性"></div><div class="sample-thumb"><img src="assets/images/sample-kol-female-06.jpg" alt="KOL / 明星女性"></div><div class="sample-thumb"><img src="assets/images/sample-kol-female-01.jpg" alt="KOL / 明星女性"></div><div class="sample-thumb"><img src="assets/images/sample-kol-female-02.jpg" alt="KOL / 明星女性"></div><div class="sample-thumb"><img src="assets/images/sample-kol-female-03.jpg" alt="KOL / 明星女性"></div></div>
+      <div class="sample-body"><h3>KOL / 明星女性</h3><p>女性 KOL 样本的妆发和服装更精致，假发、长直发、编发、礼服和精修妆面出现频率更高。它们能提供审美上限，但不能替代普通人样本。</p></div>
+    </article><article class="sample-card">
+      <div class="sample-images"><div class="sample-thumb"><img src="assets/images/sample-public-female-01.jpg" alt="普罗大众女性"></div><div class="sample-thumb"><img src="assets/images/sample-public-female-02.jpg" alt="普罗大众女性"></div><div class="sample-thumb"><img src="assets/images/sample-public-female-03.jpg" alt="普罗大众女性"></div><div class="sample-thumb"><img src="assets/images/sample-public-female-04.png" alt="普罗大众女性"></div><div class="sample-thumb"><img src="assets/images/sample-public-female-05.png" alt="普罗大众女性"></div><div class="sample-thumb"><img src="assets/images/sample-public-female-06.png" alt="普罗大众女性"></div></div>
+      <div class="sample-body"><h3>普罗大众女性</h3><p>普罗大众女性样本更能观察日常穿衣、头巾、街头行走姿态和真实环境。它们对避免资产库过度 KOL 化非常重要。</p></div>
+    </article><article class="sample-card">
+      <div class="sample-images"><div class="sample-thumb"><img src="assets/images/sample-ad-female-01.jpg" alt="广告模特女性"></div><div class="sample-thumb"><img src="assets/images/sample-ad-female-02.jpg" alt="广告模特女性"></div><div class="sample-thumb"><img src="assets/images/sample-ad-female-03.jpg" alt="广告模特女性"></div><div class="sample-thumb"><img src="assets/images/sample-ad-female-04.jpg" alt="广告模特女性"></div><div class="sample-thumb"><img src="assets/images/sample-ad-female-05.jpg" alt="广告模特女性"></div><div class="sample-thumb"><img src="assets/images/sample-ad-female-06.jpg" alt="广告模特女性"></div></div>
+      <div class="sample-body"><h3>广告模特女性</h3><p>广告女性样本的构图、背景和动作更标准化，常见手机、二维码、明亮色块和亲和表情。它们能帮助观察商业化人物如何处理发型、肤色和姿态。</p></div>
+    </article></div>
+    </section>
+
+    <section>
+      <div class="callout"><b>总判断</b><p>五套分析最一致的结论是：尼日利亚本地化人物不是“深肤色 + 宽鼻 + 厚唇”的简单标签，而是五官骨相、发型系统、皮肤色阶与质感、体型范围、妆容影响、服饰场景和配饰边界共同构成的视觉体系。</p></div>
+    </section>
+
+    <section class="module-section" id="module-structure">
+  <div class="module-banner"><p class="eyebrow-dark">Module 1</p><h2>结构性特征</h2><p>结构性特征指人物本身的生理和物理特征，按脸部、头发、皮肤、身材的观察顺序组织。</p></div>
+</section>
+<section class="dimension-section" id="structure-face">
+  <div class="section-head">
+    <div><p class="eyebrow-dark">结构性特征 1/4</p><h2>五官</h2></div>
+    <p>尼日利亚人物五官呈现清晰骨相与多样脸型并存的特征：椭圆脸、长椭圆脸和方圆脸都可见；鼻翼较饱满、鼻根不过度拔高、唇形饱满是更稳定的跨性别观察点。</p>
+  </div>
+  <div class="feature-grid"><div class="feature-subhead"><h3>1. 骨相先行</h3><p>清晰骨相是尼日利亚模特组和广告样本中常见的上位结构特征，表现为额头、颧骨、鼻梁、下颌、颈部与肩线之间的轮廓关系清楚，但它不等同于某一种具体脸型。</p></div>
+    <article class="feature-card">
+      <div class="feature-image dual">
+        <figure style="--pos:center 30%"><img src="assets/images/face-bone-male-01.jpg" alt="模特组清晰骨相男性案例"><figcaption>男性案例</figcaption></figure>
+        <figure style="--pos:center 24%"><img src="assets/images/face-bone-female-01.jpg" alt="模特组清晰骨相女性案例"><figcaption>女性案例</figcaption></figure>
+      </div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">五官</span><span class="tag gold">男女并列证据</span></div>
+        <h3>模特组清晰骨相</h3>
+        <p class="feature-note"><b>观点说明：</b>广告模特组常更强调骨相、颧骨和脸部明暗关系。男女案例并列后，可以把“清晰骨相”作为上位结构，而不是某一种性别或脸型的专属特征。</p>
+        <p class="evidence-caption"><b>图片说明：</b>左图男性样本显示额头、颧骨、鼻梁和下颌的硬朗转折；右图女性样本显示颧骨、下颌和颈肩线条的清晰关系，二者共同支撑模特组骨相清晰这一共性判断。</p>
+        <div class="conclusion-card"><b>结论判断：</b>清晰骨相是五官维度的上位描述，后续脸型、下颌、鼻唇特征都应在这个结构基础上判断。</div>
+      </div>
+    </article>
+    <div class="feature-subhead"><h3>2. 脸型多样性</h3><p>在骨相基础上再看脸型。椭圆脸、长椭圆脸、方圆脸都可能出现，这是三种可以区分的脸型倾向：椭圆脸更接近鸡蛋形比例，长椭圆脸的纵向比例更明显，方圆脸则强调面部下半区宽度和下颌重量；下颌线、下颌宽度和下颌重量只作为脸型下半部分的补充刻画。</p></div>
+    <article class="feature-card">
+      <div class="feature-image dual">
+        <figure style="--pos:center 20%"><img src="assets/images/face-oval-male-02.jpg" alt="椭圆脸男性案例"><figcaption>男性案例</figcaption></figure>
+        <figure style="--pos:center 22%"><img src="assets/images/face-oval-female-02.jpg" alt="椭圆脸女性案例"><figcaption>女性案例</figcaption></figure>
+      </div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">五官</span><span class="tag gold">男女并列证据</span></div>
+        <h3>椭圆脸</h3>
+        <p class="feature-note"><b>观点说明：</b>椭圆脸的判断重点是额头、颧骨、下颌线条较柔和，整体比例接近鸡蛋形，脸部宽窄过渡顺而不强调纵向拉长。</p>
+        <p class="evidence-caption"><b>图片说明：</b>左图男性样本面部轮廓较平顺，额头、颧骨和下颌没有明显棱角；右图女性样本脸部宽窄过渡柔和，可用于支撑普通椭圆脸判断。</p>
+        <div class="conclusion-card"><b>结论判断：</b>椭圆脸是尼日利亚人物脸型范围之一，应与长椭圆脸、方圆脸分开标注。</div>
+      </div>
+    </article>
+    <article class="feature-card">
+      <div class="feature-image dual">
+        <figure style="--pos:center 12%"><img src="assets/images/face-oval-long-male-01.jpg" alt="长椭圆脸男性案例"><figcaption>男性案例</figcaption></figure>
+        <figure style="--pos:center 20%"><img src="assets/images/face-oval-long-fix-01.jpg" alt="长椭圆脸女性案例"><figcaption>女性案例</figcaption></figure>
+      </div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">五官</span><span class="tag gold">男女并列证据</span></div>
+        <h3>长椭圆脸</h3>
+        <p class="feature-note"><b>观点说明：</b>长椭圆脸和普通椭圆脸的区别在于脸部纵向比例更长，从额头到下巴的距离更明显，脸宽相对收窄，整体不是单纯柔和轮廓，而是偏纵向拉伸。</p>
+        <p class="evidence-caption"><b>图片说明：</b>左图男性样本为正面短发近景，额头到下巴的纵向距离较明显、脸宽相对收窄；右图女性样本同样突出额头、面中和下巴的纵向关系，两者共同支撑长椭圆脸判断。</p>
+        <div class="conclusion-card"><b>结论判断：</b>长椭圆脸应作为独立脸型标签保留，和普通椭圆脸分开标注，避免把“柔和轮廓”和“纵向比例偏长”混为一类。</div>
+      </div>
+    </article>
+    <article class="feature-card">
+      <div class="feature-image dual">
+        <figure style="--pos:center 20%"><img src="assets/images/face-square-male-02.jpg" alt="方圆脸男性案例"><figcaption>男性案例</figcaption></figure>
+        <figure style="--pos:center 18%"><img src="assets/images/face-square-female-03.png" alt="方圆脸女性案例"><figcaption>女性案例</figcaption></figure>
+      </div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">五官</span><span class="tag gold">男女并列证据</span></div>
+        <h3>方圆脸</h3>
+        <p class="feature-note"><b>观点说明：</b>方圆脸体现的是面部下半区宽度、下颌重量和整体轮廓的组合。男女案例并列后，可以说明“方圆”是脸型多样性的一部分，而不是只属于男性角色。</p>
+        <p class="evidence-caption"><b>图片说明：</b>左图男性样本有较宽的面部下半区和明确下颌重量；右图女性样本以半身造型保留头肩和脸部下半区关系，可观察较饱满的面部轮廓与清楚的下颌边界。</p>
+        <div class="conclusion-card"><b>结论判断：</b>方圆脸是脸型多样性的一部分，不能把下颌重量直接等同于独立分类。</div>
+      </div>
+    </article>
+    <div class="feature-subhead"><h3>3. 鼻型与唇形共性</h3><p>鼻翼和唇形是跨性别的五官共性特征，应单独描述，但仍需避免把它们写成单一刻板脸。</p></div>
+    <article class="feature-card">
+      <div class="feature-image dual">
+        <figure style="--pos:center 18%"><img src="assets/images/face-nose-male-02.jpg" alt="饱满鼻翼 / 中低鼻根男性案例"><figcaption>男性案例</figcaption></figure>
+        <figure style="--pos:center 20%"><img src="assets/images/face-nose-female-02.jpg" alt="饱满鼻翼 / 中低鼻根女性案例"><figcaption>女性案例</figcaption></figure>
+      </div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">五官</span><span class="tag gold">男女并列证据</span></div>
+        <h3>饱满鼻翼 / 中低鼻根</h3>
+        <p class="feature-note"><b>观点说明：</b>多组样本中可见鼻翼相对饱满、鼻根不被过度拔高的特征。男女案例并列后，能把它作为跨性别五官共性，而不是单张男性近景的孤立判断。</p>
+        <p class="evidence-caption"><b>图片说明：</b>左图男性样本正面展示鼻根高度、鼻头体积和鼻翼宽度；右图女性样本同样能看到鼻翼饱满与鼻根不过度拔高的关系。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为高频面部特征之一，但必须和多样脸型、表情和骨相共同描述。</div>
+      </div>
+    </article>
+    <article class="feature-card">
+      <div class="feature-image dual">
+        <figure style="--pos:center 24%"><img src="assets/images/face-lips-male-02.jpg" alt="饱满唇形男性案例"><figcaption>男性案例</figcaption></figure>
+        <figure style="--pos:center 24%"><img src="assets/images/face-lips-female-02.jpg" alt="饱满唇形女性案例"><figcaption>女性案例</figcaption></figure>
+      </div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">五官</span><span class="tag gold">男女并列证据</span></div>
+        <h3>饱满唇形</h3>
+        <p class="feature-note"><b>观点说明：</b>饱满唇形在 KOL、广告模特和普通样本中都可见，是比“嘴大”更准确的资产库表达。男女案例并列有助于把它沉淀为五官共性标签。</p>
+        <p class="evidence-caption"><b>图片说明：</b>左图男性样本显示上下唇厚度和唇线边界；右图女性样本显示饱满唇面、唇峰和唇部高光，二者共同支撑饱满唇形判断。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为尼日利亚人物面部标签中的稳定特征，但不可单独定义人物。</div>
+      </div>
+    </article>
+  </div>
+  <div class="dimension-summary"><b>维度小结：</b>五官结构应按“骨相总纲 -> 椭圆脸/长椭圆脸/方圆脸分别判断 -> 鼻唇共性”的层级理解；下颌只作为脸型下半部分补充描述，共性特征用同卡双图呈现，避免把单一性别样本泛化为通用结论。</div>
+</section>
+
+<section class="dimension-section" id="structure-hair">
+  <div class="section-head">
+    <div><p class="eyebrow-dark">结构性特征 2/4</p><h2>发型</h2></div>
+    <p>尼日利亚男性发型以短寸、渐变、光头、短辫和清晰发际线为主，胡须打理也需要一起观察；女性样本中假发、长直发、波浪卷、编发和盘发更常见。头巾、Gele、帽子是服饰配饰，不计入发型本身。</p>
+  </div>
+  <div class="feature-grid"><div class="feature-subhead"><h3>男性发型体系</h3><p>男性样本的发型重点集中在可打理毛发结构：短寸、渐变、光头、短辫、清晰发际线和胡须造型共同构成整洁度与身份感。</p></div><article class="feature-card">
+      <div class="feature-image contain" style="--pos:center"><img src="assets/images/hair-short-curls-01.jpg" alt="短寸 / 自然短卷"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">发型</span><span class="tag gold">尼日利亚广告图参考</span></div>
+        <h3>短寸 / 自然短卷</h3>
+        <p class="feature-note"><b>观点说明：</b>男性广告样本里短自然卷和短寸发型高频出现，通常与清晰发际线共同出现。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本头发短、卷度自然，发际线清楚，符合年轻男性商业样本常见发型。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为男性基础发型标签，不应默认全部生成 Afro。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image contain" style="--pos:center"><img src="assets/images/hair-crisp-fade-01.jpg" alt="低渐变短发"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">发型</span><span class="tag gold">尼日利亚广告图参考</span></div>
+        <h3>低渐变短发</h3>
+        <p class="feature-note"><b>观点说明：</b>低渐变短发在数字服务广告男性中可见，侧边收短、顶部保留短发体积，整体比自然短卷更强调边缘修剪。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本侧边头发收短、顶部保留短卷，发型边界干净。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为男性都市广告样本的发型标签，但需继续补充更多侧面清晰图。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image cover" style="--pos:center 20%"><img src="assets/images/hair-bald-01.jpg" alt="光头"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">发型</span><span class="tag gold">尼日利亚结论性报告_图片整理</span></div>
+        <h3>光头</h3>
+        <p class="feature-note"><b>观点说明：</b>光头在成熟男性和商务男性样本中可见，会让头型和肤色光泽更突出。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本剃发明显，头部和脸部的肤色反光都较清楚。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为男性发型体系中的稳定分支。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image contain" style="--pos:center"><img src="assets/images/hair-short-braids-01.jpg" alt="脏辫 / 短辫"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">发型</span><span class="tag gold">尼日利亚广告图参考</span></div>
+        <h3>脏辫 / 短辫</h3>
+        <p class="feature-note"><b>观点说明：</b>短辫/脏辫在年轻男性和潮流人物样本中可见，常与街头服饰或广告动作共同出现。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本头部短辫清晰，搭配格纹外套和手机动作，商业场景识别强。</p>
+        <div class="conclusion-card"><b>结论判断：</b>短辫/编发可作为年轻都市男性或潮流服务广告的有效发型标签。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image contain" style="--pos:center"><img src="assets/images/hair-clear-hairline-unique-01.jpg" alt="清晰发际线"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">发型</span><span class="tag gold">尼日利亚广告图参考</span></div>
+        <h3>清晰发际线</h3>
+        <p class="feature-note"><b>观点说明：</b>清晰发际线常与短发、低渐变和广告精修共同出现，是男性形象整洁度的重要视觉点。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本额前发际线清楚，短发边界规整，和笑容、正面姿态共同形成干净形象。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为男性广告人物的细分发型标签。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image cover" style="--pos:center 30%"><img src="assets/images/hair-beard-grooming-01.jpg" alt="男性妆容体系 / 胡须造型"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">发型</span><span class="tag gold">尼日利亚明星图</span></div>
+        <h3>男性妆容体系 / 胡须造型</h3>
+        <p class="feature-note"><b>观点说明：</b>胡须是可修剪、可打理的毛发造型，应放在男性妆容体系中理解，而不是重复写成骨相或皮肤质感。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本胡须边界清楚，和短发、红色上衣一起构成完整男性造型。</p>
+        <div class="conclusion-card"><b>结论判断：</b>胡须造型保留在发型维度，其余维度不再重复使用同一论据。</div>
+      </div>
+    </article><div class="feature-subhead"><h3>女性发型体系</h3><p>女性发型再看假发、接发、长直发、波浪卷、编发、玉米辫和盘发等结构；头巾、Gele 和帽子不放在发型里，统一归入服饰装扮中的配饰。</p></div><article class="feature-card">
+      <div class="feature-image cover" style="--pos:center 30%"><img src="assets/images/hair-wig-extension-unique-01.jpg" alt="假发 / 接发"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">发型</span><span class="tag gold">尼日利亚明星图</span></div>
+        <h3>假发 / 接发</h3>
+        <p class="feature-note"><b>观点说明：</b>女性 KOL 中假发/接发样本较常见，常与精修妆容和社媒肖像共同出现。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本体现了长直假发、精修妆面和完整的 KOL 肖像风格。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为女性 KOL 发型标签，但不能替代普通女性发型。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image cover" style="--pos:center 30%"><img src="assets/images/hair-long-straight-user-01.png" alt="长直发"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">发型</span><span class="tag gold">用户指定补充图</span></div>
+        <h3>长直发</h3>
+        <p class="feature-note"><b>观点说明：</b>长直发在女性明星/KOL样本中较明显，通常伴随妆容、首饰和干净背景。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本头发从中分位置自然垂落，发丝顺直并延伸到肩部以下，长度和直发结构完整可见，可支撑长直发标签。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为女性精致样本的常见发型标签。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image contain" style="--pos:center"><img src="assets/images/hair-wavy-curls-01.jpg" alt="波浪卷"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">发型</span><span class="tag gold">尼日利亚明星图</span></div>
+        <h3>波浪卷</h3>
+        <p class="feature-note"><b>观点说明：</b>波浪卷在女性 KOL 和明星样本中可见，通常与精修妆面、礼服或社媒姿态共同出现。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本发型有明显波浪卷度，并与精修妆面和时尚服装共同构成 KOL 造型。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为女性精致样本的发型标签，但不能替代普通女性发型。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image cover" style="--pos:center 28%"><img src="assets/images/hair-braids-unique-01.jpg" alt="编发"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">发型</span><span class="tag gold">尼日利亚明星图</span></div>
+        <h3>编发</h3>
+        <p class="feature-note"><b>观点说明：</b>编发在女性 KOL、明星和日常样本中都可见，造型变化多，需要独立成类。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本长编发清晰，发束和发际线处理都很明显。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为女性发型系统的关键标签。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image contain" style="--pos:center"><img src="assets/images/hair-cornrows-01.jpg" alt="玉米辫"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">发型</span><span class="tag gold">尼日利亚广告图参考</span></div>
+        <h3>玉米辫</h3>
+        <p class="feature-note"><b>观点说明：</b>玉米辫/贴头辫需要头部线条清晰的证据图，现有样本中可见贴头分区编发。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本头部编发贴近头皮，分区线条比普通散辫更明确。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为女性发型标签，但后续需要补充更高清头部样本。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image cover" style="--pos:center 18%"><img src="assets/images/hair-updo-fix-01.jpg" alt="盘发"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">发型</span><span class="tag gold">人工修正PDF补充图</span></div>
+        <h3>盘发</h3>
+        <p class="feature-note"><b>观点说明：</b>盘发在精修女性样本中可见，会把脸型、额头和妆面完全露出。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本从侧面完整展示后脑低盘发、顺滑发面、发际线和颈部关系。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为盘发标签的更准确证据图。</div>
+      </div>
+    </article></div>
+  <div class="dimension-summary"><b>维度小结：</b>发型体系应男女分区记录；胡须只在男性妆容体系中出现，避免在五官和皮肤质感中重复论证。</div>
+</section>
+
+<section class="dimension-section" id="structure-skin">
+  <div class="section-head">
+    <div><p class="eyebrow-dark">结构性特征 3/4</p><h2>皮肤</h2></div>
+    <p>尼日利亚人物皮肤需要同时看色阶、底调、表面质感和局部色素差异：肤色从中棕到极深色连续分布，真实纹理和自然反光决定深肤色的结构可读性。</p>
+  </div>
+  <div class="feature-grid"><div class="feature-subhead"><h3>肤色（色阶与底调）</h3><p>中棕、浓郁棕、深巧克力、极深肤色与暖调共同构成连续色阶，说明尼日利亚人物肤色不能被简化成单一“黑色”。</p></div><article class="feature-card">
+      <div class="feature-image cover" style="--pos:center 24%"><img src="assets/images/skin-medium-brown-user-01.png" alt="中棕肤色"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">肤色</span><span class="tag gold">用户指定补充图</span></div>
+        <h3>中棕肤色</h3>
+        <p class="feature-note"><b>观点说明：</b>中棕肤色在 KOL、普通人和商业样本中都可能出现，说明尼日利亚肤色不能被统一处理为极深色。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本在暖光环境下仍能看到稳定的中棕肤色色阶，脸部、手臂和胸颈区域的肤色连续，可支撑中棕肤色标签。</p>
+        <div class="conclusion-card"><b>结论判断：</b>中棕肤色是肤色色阶的一部分，应被保留在资产库范围内。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image cover" style="--pos:center 24%"><img src="assets/images/skin-rich-brown-01.jpg" alt="浓郁棕色"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">肤色</span><span class="tag gold">尼日利亚结论性报告_图片整理</span></div>
+        <h3>浓郁棕色</h3>
+        <p class="feature-note"><b>观点说明：</b>浓郁棕色常见于精修女性肖像，色调更饱满，和妆面、灯光共同形成社媒审美。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本面部、颈部和手部呈浓郁棕色，妆面没有抹平肤色层次。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为 KOL/精修样本的肤色色阶标签，但不能代表所有女性样本。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image contain" style="--pos:center"><img src="assets/images/skin-deep-chocolate-unique-01.jpg" alt="深巧克力肤色"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">肤色</span><span class="tag gold">尼日利亚广告图参考</span></div>
+        <h3>深巧克力肤色</h3>
+        <p class="feature-note"><b>观点说明：</b>深巧克力肤色在商业男性样本中表现稳定，重点是深棕色阶与暖调之间的关系。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本体现了深巧克力肤色，脸部与额头区域的明暗关系仍保持可读。</p>
+        <div class="conclusion-card"><b>结论判断：</b>深巧克力肤色是重要类型，但不能替代中棕和极深肤色。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image contain" style="--pos:center"><img src="assets/images/skin-ebony-user-01.png" alt="极深肤色"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">肤色</span><span class="tag gold">用户指定补充图</span></div>
+        <h3>极深肤色</h3>
+        <p class="feature-note"><b>观点说明：</b>极深肤色是连续色阶中的深端，不应被简单处理成无层次的黑色块。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本呈现极深肤色，额头、鼻梁、面颊和颈部仍保留可读明暗层次，可支撑极深肤色色阶判断。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为肤色色阶中的极深分支，但必须与中棕、浓郁棕色并列使用。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image cover" style="--pos:center 30%"><img src="assets/images/skin-warm-undertone-01.jpg" alt="暖调肤色"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">肤色</span><span class="tag gold">尼日利亚明星图</span></div>
+        <h3>暖调肤色</h3>
+        <p class="feature-note"><b>观点说明：</b>同样深浅的肤色也会有暖调、中性或偏冷底调差异，提示词不能只写深浅。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本脸部与肩颈呈暖棕色调，妆面与灯光共同强化了温暖肤色层次。</p>
+        <div class="conclusion-card"><b>结论判断：</b>暖调肤色可作为色调标签，不能只用深浅描述肤色。</div>
+      </div>
+    </article>
+
+    <div class="skin-reference-module">
+      <h3>全肤色体系与深肤色参考</h3>
+      <p>两张图共同说明：尼日利亚人物肤色不能被单一化处理，后续 Prompt / LoRA / 人物资产库标注应同时关注色阶、底调、光泽与肤质层次。</p>
+      <div class="skin-reference-grid">
+        <article class="skin-reference-card">
+          <div class="skin-reference-image"><img src="assets/images/skin-tone-chart-full-01.jpg" alt="尼日利亚肤色图谱"></div>
+          <div class="skin-reference-body"><h4>尼日利亚肤色图谱</h4><p>展示从浅琥珀、蜂蜜棕、焦糖棕、可可棕到乌木色的完整肤色跨度，用于说明尼日利亚人物肤色具有明显连续性和多样性。</p></div>
+        </article>
+        <article class="skin-reference-card">
+          <div class="skin-reference-image"><img src="assets/images/skin-tone-chart-deep-01.jpg" alt="常见深肤色参考"></div>
+          <div class="skin-reference-body"><h4>常见深肤色参考</h4><p>集中展示较常见的深肤色、暖金底调、中性底调、暖古铜底调等，可作为深肤色层次、底调和高光表现的补充参考。</p></div>
+        </article>
+      </div>
+    </div>
+<div class="feature-subhead"><h3>肤质（纹理、光泽与深肤色可读性）</h3><p>可见纹理、毛孔、痘印、唇纹、精修层次和自然光泽共同决定皮肤真实度；深肤色尤其依赖额头、鼻梁、颧骨和肩颈的真实反光来保持结构可读。</p></div><article class="feature-card">
+      <div class="feature-image cover" style="--pos:center 20%"><img src="assets/images/texture-visible-skin-user-01.png" alt="可见肤质"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">皮肤质感</span><span class="tag gold">用户指定补充图</span></div>
+        <h3>可见肤质</h3>
+        <p class="feature-note"><b>观点说明：</b>真实人物肤质不是单一塑料面，精修或妆容场景下也应保留局部纹理和表情细节。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本在妆容和头饰场景下仍能看到额头、眼周、鼻部和脸颊的皮肤纹理与表情细纹，可支撑可见肤质标签。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为避免过度磨皮的基础质感标签。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image cover" style="--pos:center 28%"><img src="assets/images/texture-natural-pores-user-01.png" alt="自然毛孔"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">皮肤质感</span><span class="tag gold">用户指定补充图</span></div>
+        <h3>自然毛孔</h3>
+        <p class="feature-note"><b>观点说明：</b>自然毛孔和细微纹理在近景中更容易判断，是防止 AI 生成塑料皮的关键。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本为近距离自拍式人像，额头、鼻部和脸颊区域保留毛孔、细小斑点和自然纹理，可支撑自然毛孔标签。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为近景真实肤质的提示标签，但需要更多高清无滤镜样本补强。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image cover" style="--pos:center 28%"><img src="assets/images/texture-blemish-user-01.png" alt="痘印 / 小瑕疵"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">皮肤质感</span><span class="tag gold">用户指定补充图</span></div>
+        <h3>痘印 / 小瑕疵</h3>
+        <p class="feature-note"><b>观点说明：</b>补充图提供了清晰近景，可观察到面部细小痘印、肤色不均和真实皮肤纹理。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本为近景人像，额头、面颊和鼻部周围可见细小痘印、肤色不均和真实皮肤纹理，可直接支撑“痘印 / 小瑕疵”标签。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为痘印/小瑕疵标签的代表证据图，替代原 placeholder。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image cover" style="--pos:center 30%"><img src="assets/images/face-full-lips-01.jpg" alt="唇纹"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">皮肤质感</span><span class="tag gold">尼日利亚明星图</span></div>
+        <h3>唇纹</h3>
+        <p class="feature-note"><b>观点说明：</b>唇纹和唇面高光能让饱满唇形更真实，避免生成过度磨平的塑料唇。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本唇部较清晰，可观察到唇面高光、唇线和细微纹理。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为唇部细节标签，与饱满唇形配合使用。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image cover" style="--pos:center 30%"><img src="assets/images/texture-retouched-layers-01.jpg" alt="精修但保留皮肤层次"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">皮肤质感</span><span class="tag gold">尼日利亚广告图参考</span></div>
+        <h3>精修但保留皮肤层次</h3>
+        <p class="feature-note"><b>观点说明：</b>广告和 KOL 样本可以精修，但仍应保留深肤色高光、发型边界和脸部层次。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该广告样本经过商业处理，但脸部高光、肤色层次和自然卷发仍然可读。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为商业精修的正向参考：精致但不磨成平面。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image cover" style="--pos:center 24%"><img src="assets/images/texture-satin-glow-unique-01.jpg" alt="自然高光 / satin glow"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">皮肤质感</span><span class="tag gold">尼日利亚结论性报告_图片整理</span></div>
+        <h3>自然高光 / satin glow</h3>
+        <p class="feature-note"><b>观点说明：</b>深肤色和中深肤色都需要自然高光来保留体积，常见位置包括额头、鼻梁、颧骨和肩颈。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本在额头、鼻梁、脸颊和肩颈处保留了明显但不过曝的自然光泽。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为“深肤色需要光泽层次，而不是灰黑平涂”的证据图。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image cover" style="--pos:center 24%"><img src="assets/images/skin-face-shoulder-highlight-fix-01.jpg" alt="额头、鼻梁、颧骨、肩颈高光"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">皮肤质感</span><span class="tag gold">人工修正PDF补充图</span></div>
+        <h3>额头、鼻梁、颧骨、肩颈高光</h3>
+        <p class="feature-note"><b>观点说明：</b>该标签需要同时看到脸部和肩颈区域；自然高光帮助深肤色人物保留五官和身体结构。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本在额头、鼻梁、颧骨、肩颈和锁骨区域都有可读高光。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为深肤色高光位置关系的代表图。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image cover" style="--pos:center 24%"><img src="assets/images/texture-oil-sheen-unique-01.jpg" alt="轻微油光"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">皮肤质感</span><span class="tag gold">尼日利亚结论性报告_图片整理</span></div>
+        <h3>轻微油光</h3>
+        <p class="feature-note"><b>观点说明：</b>轻微油光常出现在额头、鼻梁和颧骨区域，与深肤色高光共同形成真实感。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本额头和鼻梁有轻微油光，妆面精修但没有完全抹平反光。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为真实光泽标签，而不是过曝或塑料高光。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image contain" style="--pos:center"><img src="assets/images/texture-dark-highlight-unique-01.jpg" alt="深肤色真实高光"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">皮肤质感</span><span class="tag gold">尼日利亚广告图参考</span></div>
+        <h3>深肤色真实高光</h3>
+        <p class="feature-note"><b>观点说明：</b>深肤色需要局部高光和暗部层次来保持五官可读性。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本深肤色脸部在额头、鼻梁和面颊处保留可读高光。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为深肤色渲染与修图的关键质感标签。</div>
+      </div>
+    </article><div class="feature-subhead"><h3>局部色素差异</h3><p>手心、手背、脚心、眼白、牙齿、唇部和脸部之间会出现自然色差，这些局部差异需要作为真实皮肤信息独立保留。</p></div><article class="feature-card">
+      <div class="feature-image dual">
+        <figure style="--pos:center"><img src="assets/images/texture-pigment-hand-palm-01.jpg" alt="手心与手背色素差异案例"><figcaption>手心差异</figcaption></figure>
+        <figure style="--pos:center"><img src="assets/images/texture-pigment-hand-back-01.jpg" alt="手背与指节色素差异案例"><figcaption>手背差异</figcaption></figure>
+      </div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">皮肤质感</span><span class="tag gold">用户指定补充图</span></div>
+        <h3>色素差异</h3>
+        <p class="feature-note"><b>观点说明：</b>手心、手背、指节、指尖和腕部之间会出现自然色素差异，这类局部变化比单一肤色块更能体现真实皮肤。</p>
+        <p class="evidence-caption"><b>图片说明：</b>左图展示手心与手指外侧的明暗差别，右图展示手背、指节和指尖之间的色素层次，可用于补充局部色素差异证据。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为手部局部色素差异标签，后续应与脸部、眼白、牙齿等部位差异共同标注。</div>
+      </div>
+    </article>
+  </div>
+  <div class="dimension-summary"><b>维度小结：</b>皮肤子项应分为肤色、肤质和局部色素差异三层：肤色聚焦 medium brown、rich brown、deep chocolate、ebony、warm undertone 等色阶和底调；肤质保留真实纹理、自然反光和深肤色高光层次；局部色素差异记录手心、手背、眼白、牙齿等部位变化。以上色卡进一步验证了尼日利亚人物肤色从浅琥珀到乌木色的连续色阶分布，以及深肤色区间内暖金、中性、暖古铜等底调差异。</div>
+</section>
+<section class="dimension-section" id="structure-body">
+  <div class="section-head">
+    <div><p class="eyebrow-dark">结构性特征 4/4</p><h2>身材与体型</h2></div>
+    <p>尼日利亚人物体型呈现明显多样性，高挑修长、丰满曲线和普通职业体型都应进入资产库；KOL/模特样本更强调姿态和比例，普通职业样本更接近日常身份表达。</p>
+  </div>
+  <div class="feature-grid"><div class="feature-subhead"><h3>身材多样性</h3><p>尼日利亚人物资产库需要覆盖高挑、丰满、普通体型和不同年龄/职业状态，不能只保留单一瘦高或模特化身材。</p></div><article class="feature-card">
+      <div class="feature-image dual">
+        <figure style="--pos:center"><img src="assets/images/body-tall-black-suit-01.jpg" alt="高挑修长黑色套装体型案例"><figcaption>极简套装</figcaption></figure>
+        <figure style="--pos:center"><img src="assets/images/body-tall-green-jersey-01.jpg" alt="高挑修长绿色球衣体型案例"><figcaption>街头造型</figcaption></figure>
+      </div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">身材与体型</span><span class="tag gold">用户指定补充图</span></div>
+        <h3>高挑 / 修长模特体型</h3>
+        <p class="feature-note"><b>观点说明：</b>高挑修长体型不只出现在礼服或精修 KOL 图中，也可以通过极简套装、街头球衣等不同造型呈现，关键是四肢比例、身体纵向线条和姿态控制。</p>
+        <p class="evidence-caption"><b>图片说明：</b>左图以黑色套装完整展示细长四肢和垂直廓形；右图以绿色球衣造型展示更街头化的修长比例和动态姿态。</p>
+        <div class="conclusion-card"><b>结论判断：</b>高挑修长可作为独立体型标签，但应允许时装化和街头化两种呈现，不局限于单一模特照。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image dual">
+        <figure style="--pos:center"><img src="assets/images/body-curvy-male-black-suit-01.png" alt="丰满体型男性黑色套装案例"><figcaption>男性案例</figcaption></figure>
+        <figure style="--pos:center"><img src="assets/images/body-curvy-silver-dress-01.png" alt="曲线体型女性银色亮片裙案例"><figcaption>女性案例</figcaption></figure>
+      </div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">身材与体型</span><span class="tag gold">用户指定补充图</span></div>
+        <h3>丰满 / 曲线体型</h3>
+        <p class="feature-note"><b>观点说明：</b>丰满和曲线体型同时存在于男性与女性样本中：男性更多表现为肩胸、手臂和躯干厚度，女性则更强调胸腰胯曲线和礼服包裹后的体量感。</p>
+        <p class="evidence-caption"><b>图片说明：</b>左图男性黑色套装完整展示较厚实的上身、手臂和腿部比例；右图银色亮片裙突出胸腰胯曲线和坐姿下的身体体量。</p>
+        <div class="conclusion-card"><b>结论判断：</b>丰满/曲线体型应作为跨性别体型范围保留，用于补充资产库的身体多样性。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image dual">
+        <figure style="--pos:center 20%"><img src="assets/images/body-career-unique-01.jpg" alt="普通职业体型女性案例"><figcaption>女性案例</figcaption></figure>
+        <figure style="--pos:center"><img src="assets/images/body-career-male-traditional-01.png" alt="普通职业体型男性案例"><figcaption>男性案例</figcaption></figure>
+      </div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">身材与体型</span><span class="tag gold">用户指定补充图</span></div>
+        <h3>普通职业体型</h3>
+        <p class="feature-note"><b>观点说明：</b>普通职业或正式身份样本更接近日常社会角色，身体表达服务于职业、仪式或身份语境，而不是模特化展示。</p>
+        <p class="evidence-caption"><b>图片说明：</b>左图以半身商务站姿呈现自然肩线和上身比例；右图男性样本以传统正式服饰呈现完整站姿和常规体型，可补充男性普通职业/正式身份案例。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为普通职业/正式身份体型样本，帮助资产库避免过度 KOL 化或单一瘦高化。</div>
+      </div>
+    </article></div>
+  <div class="dimension-summary"><b>维度小结：</b>身材与体型应独立建维度：同时保留高挑、丰满、普通职业体型与不同年龄职业状态，避免单一瘦高审美。</div>
+</section>
+
+    
+<section class="module-section" id="module-culture">
+  <div class="module-banner"><p class="eyebrow-dark">Module 2</p><h2>文化性特征</h2><p>文化性特征只保留与审美直接相关的妆容、服饰和配饰，城市、音乐、影视语境作为背景说明，不再与证据卡片混排。</p></div>
+</section>
+<section class="dimension-section" id="culture-makeup">
+  <div class="section-head">
+    <div><p class="eyebrow-dark">文化性特征 1/3</p><h2>妆容</h2></div>
+    <p>尼日利亚明星和 KOL 的精致妆面会向普通大众扩散，影响日常化妆的浓淡、眼妆色彩、唇妆饱和度和皮肤光泽处理；普通人不一定复刻完整造型，但会吸收更清晰的眉眼、唇色和底妆质感。</p>
+  </div>
+  <div class="feature-grid">
+    <div class="feature-subhead"><h3>明星妆造对大众审美的影响</h3><p>明星/KOL 样本提供更高完成度的妆造模板：眼妆、眉形、唇色、肤色光泽和发型一起塑造“精致感”。这种模板会被普通人拆解成更日常的眉眼加强、唇妆提色和底妆提亮。</p></div>
+    <article class="feature-card">
+      <div class="feature-image cover" style="--pos:center 22%"><img src="assets/images/clothing-kol-fashion-01.jpg" alt="KOL 日常精致妆发案例"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">妆容</span><span class="tag gold">明星 / 商业审美影响</span></div>
+        <h3>精致妆面 / 日常化妆发影响</h3>
+        <p class="feature-note"><b>观点说明：</b>明星和 KOL 样本常把干净眉形、柔和眼妆、饱满唇色、自然光泽底妆和完整发型组合在一起，形成更容易被普通大众日常吸收的妆造模板。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本展示了清晰眉眼、柔和唇色、自然光泽底妆与卷发造型的组合关系，可支撑 KOL 精致妆发向日常审美扩散的判断。</p>
+        <div class="conclusion-card"><b>结论判断：</b>妆容可作为文化性审美标签；生成普通人物时应降低强度，保留眉眼、唇色和底妆质感，而不是默认红毯级浓妆。</div>
+      </div>
+    </article>
+  </div>
+  <div class="dimension-summary"><b>维度小结：</b>妆容不是单独的脸部特征，而是明星、广告、音乐视觉和日常模仿共同形成的审美路径；应区分 KOL 精致妆、广告强色彩妆和普通人的日常化吸收。</div>
+</section>
+<section class="dimension-section" id="culture-clothing">
+  <div class="section-head">
+    <div><p class="eyebrow-dark">文化性特征 2/3</p><h2>服饰</h2></div>
+    <p>尼日利亚服饰审美主要通过场合、剪裁、材质、色彩和纹饰体现：都市日常更轻便，商务更正式，传统与婚礼场景则强调 Ankara、Aso Ebi、Agbada/Buba、Babban riga、Isiagu、Gele 等清晰服装符号。</p>
+  </div>
+  <div class="feature-grid"><div class="feature-subhead"><h3>服饰：都市日常、传统与场合穿着</h3><p>这里的“都市审美”指 Lagos 等城市语境中可被视觉直接感知的穿搭选择：剪裁更贴近日常通勤、街头运动和商务场合，Ankara 元素则主要体现在印花纹饰、色彩组合和传统廓形的现代化使用。PDF 中提到星期五穿 Ankara、婚礼/命名仪式使用 Aso Ebi，以及红、白、黑、紫黑等组合，都应落到服装设计层面理解。</p></div><article class="feature-card">
+      <div class="feature-image dual">
+        <figure style="--pos:center"><img src="assets/images/clothing-urban-everyday-01.jpg" alt="都市日常穿着女性案例"><figcaption>女性案例</figcaption></figure>
+        <figure style="--pos:center"><img src="assets/images/clothing-urban-daily-male-pdf-01.jpg" alt="都市日常穿着男性案例"><figcaption>男性案例</figcaption></figure>
+      </div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">服饰装扮</span><span class="tag gold">都市日常</span></div>
+        <h3>都市日常穿着</h3>
+        <p class="feature-note"><b>观点说明：</b>尼日利亚都市日常穿着偏好简单、生活化的单品组合，强调行动方便和自然姿态。男女之间共性更多，差异主要体现在具体单品：女性可见连衣裙、牛仔裤或轻便上衣，男性常见 T 恤、衬衫、牛仔裤和休闲裤。</p>
+        <p class="evidence-caption"><b>图片说明：</b>男女样本共同说明，都市日常场景以轻便、可移动、低仪式感的穿搭为主，服装不需要强传统符号也能成立；资产库中应把“都市日常”理解为生活化单品组合，而不是单一性别或单一款式。</p>
+        <div class="conclusion-card"><b>结论判断：</b>都市日常穿着可作为男女通用的服饰场景标签，共性是轻便自然，差异是具体单品选择。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image dual">
+        <figure style="--pos:center"><img src="assets/images/clothing-streetwear-01.jpg" alt="街头运动风男性案例"><figcaption>男性案例</figcaption></figure>
+        <figure style="--pos:center"><img src="assets/images/clothing-street-sport-female-pdf-01.jpg" alt="街头运动风女性案例"><figcaption>女性案例</figcaption></figure>
+      </div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">服饰装扮</span><span class="tag gold">街头 / 运动</span></div>
+        <h3>街头 / 运动风</h3>
+        <p class="feature-note"><b>观点说明：</b>尼日利亚年轻群体的街头/运动风更强调舒适、运动鞋、帽衫/运动套装、T 恤和可活动的裤装。男女共性是休闲和运动化，差异主要在廓形松紧、露肤程度和配饰强度。</p>
+        <p class="evidence-caption"><b>图片说明：</b>男性样本体现帽衫、运动化上装和休闲姿态；女性样本体现运动套装、运动鞋与墨镜等都市运动元素。两者共同支持“街头/运动风”作为年轻人物服饰标签。</p>
+        <div class="conclusion-card"><b>结论判断：</b>街头/运动风适合年轻、都市或休闲人物；男女都可使用，核心是运动化单品和轻松姿态。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image dual">
+        <figure style="--pos:center 20%"><img src="assets/images/clothing-business-formal-user-01.png" alt="商务正式女性案例"><figcaption>女性案例</figcaption></figure>
+        <figure style="--pos:center"><img src="assets/images/clothing-business-male-pdf-01.jpg" alt="商务正式男性案例"><figcaption>男性案例</figcaption></figure>
+      </div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">服饰装扮</span><span class="tag gold">用户指定补充图</span></div>
+        <h3>商务正式</h3>
+        <p class="feature-note"><b>观点说明：</b>尼日利亚商务正式场合偏好结构化剪裁的西装、衬衫、套装或更克制的半正式组合，配色相对稳重，同时保留项链、胸针、手表、墨镜等精致配饰强化正式感。男女在剪裁挺括度和整洁度上的要求一致。</p>
+        <p class="evidence-caption"><b>图片说明：</b>女性案例体现结构化西装与精致配饰，男性案例体现衬衫、修身裤装和商务休闲鞋。两者共同说明商务正式不是单一西装模板，而是“挺括剪裁 + 克制配色 + 适度配饰”的场景偏好。</p>
+        <div class="conclusion-card"><b>结论判断：</b>商务正式可作为男女通用场景标签，重点是结构化剪裁和整洁度，而不是固定某一种性别造型。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image contain" style="--pos:center"><img src="assets/images/clothing-agbada-kaftan-01.jpg" alt="传统长袍 / Agbada / Kaftan"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">服饰装扮</span><span class="tag gold">尼日利亚广告图参考</span></div>
+        <h3>传统长袍 / Agbada / Kaftan</h3>
+        <p class="feature-note"><b>观点说明：</b>传统长袍在影视、文化和正式图像中可见，廓形和头饰是主要判断线索。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本以金色长袍、帽饰和群像构成 Agbada/Kaftan 类传统服饰证据。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为传统服饰标签，但不是普通人物默认穿着。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image dual">
+        <figure style="--pos:center"><img src="assets/images/clothing-ankara-unique-01.png" alt="Ankara 星期五传统日常女性案例"><figcaption>女性案例</figcaption></figure>
+        <figure style="--pos:center"><img src="assets/images/clothing-ankara-friday-male-01.jpg" alt="Ankara 星期五传统日常男性案例"><figcaption>男性案例</figcaption></figure>
+      </div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">服饰装扮</span><span class="tag gold">尼日利亚-普罗大众</span></div>
+        <h3>Ankara 印花 / 星期五传统日常</h3>
+        <p class="feature-note"><b>观点说明：</b>尼日利亚有"星期五穿本土服装"的社会惯例：这一天人们普遍选择安卡拉（Ankara）印花面料制作的传统服饰而非日常休闲装，是一种在工作/社交场合展示文化认同的着装传统，类似"便装星期五"但载体是传统印花服饰而非西式休闲装。安卡拉面料本身是尼日利亚传统文化传承的重要载体，DaViva、Hollantex 等本土品牌通过明星联名活动（跳舞挑战、时装秀等）持续带动这类印花服饰在社交媒体上的讨论度和流行趋势。</p>
+        <p class="evidence-caption"><b>图片说明：</b>女性街拍中的绿色安卡拉印花服装、头巾和真实街头环境，展示传统印花在日常场景中的落地方式；男性样本则展示星期五本土服装可通过印花上衣、长袍式剪裁和休闲鞋进入都市/社交场合。</p>
+        <div class="conclusion-card"><b>结论判断：</b>星期五穿着安卡拉印花服装是尼日利亚人展示文化认同的社会惯例，与商务、街头等日常场景并列存在，不是单纯的图案标签。</div>
+      </div>
+    </article>
+    <article class="feature-card">
+      <div class="feature-image dual">
+        <figure style="--pos:center"><img style="object-fit:contain" src="assets/images/clothing-lagos-urban-male-ankara-01.png" alt="Lagos 都市审美男性案例"><figcaption>男性案例</figcaption></figure>
+        <figure style="--pos:center"><img style="object-fit:contain" src="assets/images/clothing-lagos-urban-female-ankara-01.png" alt="Lagos 都市审美女性案例"><figcaption>女性案例</figcaption></figure>
+      </div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">文化性特征</span><span class="tag gold">服饰</span></div>
+        <h3>Lagos 都市审美</h3>
+        <p class="feature-note"><b>观点说明：</b>Lagos 作为尼日利亚商业与娱乐中心，其都市审美体现在安卡拉面料的都市化剪裁上：男性可将传统印花处理成利落衬衫，女性可将印花处理成收腰连体裤或裤装礼服，二者都把传统纹饰转化成更适合城市社交和日常出行的现代廓形。</p>
+        <p class="evidence-caption"><b>图片说明：</b>左图男性案例保留 Ankara 风格纹饰，但以衬衫、黑色窄裤和白鞋形成都市穿搭；右图女性案例用粉灰 Ankara 图案、收腰和灯笼裤式剪裁形成更时装化的城市造型。两张图共同说明 Lagos 都市审美并不是纯传统服饰，而是“传统印花 + 现代剪裁 + 城市单品”的组合。</p>
+        <div class="conclusion-card"><b>结论判断：</b>Lagos 都市审美是“传统面料 + 现代剪裁”的结合，可作为都市人物服饰标签的判断依据；男女共性是保留印花与色彩，差异体现在衬衫、裤装、连体裤等具体廓形。</div>
+      </div>
+    </article>
+    <article class="feature-card">
+      <div class="feature-image cover" style="--pos:center"><img src="assets/images/culture-afrobeats-unique-01.jpg" alt="Afrobeats 音乐视觉服饰案例"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">文化性特征</span><span class="tag gold">服饰</span></div>
+        <h3>Afrobeats / 音乐视觉</h3>
+        <p class="feature-note"><b>观点说明：</b>Afrobeats 音乐视觉通过墨镜、高饱和色彩、潮流单品塑造年轻人的街头造型，是年轻群体日常穿搭里“潮流感”的来源之一。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本中的墨镜、T 恤、强烈红黄撞色海报和音乐活动语境共同构成潮流感，说明 Afrobeats 影响更多体现在年轻人物的色彩、配件和姿态上。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为年轻/潮流人物服饰标签的参考依据，不代表全年龄段穿着偏好。</div>
+      </div>
+    </article>
+    <article class="feature-card">
+      <div class="feature-image cover" style="--pos:center"><img src="assets/images/clothing-nollywood-redcarpet-01.jpg" alt="Nollywood 影视人物正式造型案例"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">文化性特征</span><span class="tag gold">服饰</span></div>
+        <h3>Nollywood / 影视人物感</h3>
+        <p class="feature-note"><b>观点说明：</b>Nollywood 影视产业通过演员在宣传物料、颁奖礼上的正式庆典造型，强化了传统服饰（Agbada、Gele 等）在公众形象和身份象征中的地位。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本中演员以紫黑色传统图案套装、头饰、红毯背景和正式合影姿态出现，体现传统服饰在影视公众形象中的身份强化作用。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为正式/庆典类人物服饰标签的文化背景依据。</div>
+      </div>
+    </article>
+    <article class="feature-card">
+      <div class="feature-image triple">
+        <figure><img src="assets/images/clothing-igbo-traditional-family-01.png" alt="伊格博传统服饰案例"><figcaption>Igbo</figcaption></figure>
+        <figure><img src="assets/images/clothing-yoruba-traditional-couple-01.png" alt="约鲁巴传统服饰案例"><figcaption>Yoruba</figcaption></figure>
+        <figure><img src="assets/images/clothing-hausa-fulani-traditional-family-01.png" alt="豪萨富拉尼传统服饰案例"><figcaption>Hausa-Fulani</figcaption></figure>
+      </div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">服饰装扮</span><span class="tag gold">民族传统服饰</span></div>
+        <h3>三大民族传统服饰差异</h3>
+        <p class="feature-note"><b>观点说明：</b>伊格博传统服饰常见 Isiagu 图案上衣、红帽、珠饰和家庭/庆典合影中的身份化配饰；约鲁巴传统服饰突出男性 Agbada 外袍、Fila 帽、女性 Gele 头巾、Buba/Iro 等成套廓形；豪萨/富拉尼传统服饰常见 Babban riga 大型流动长袍、灰白色系帽饰，以及女性 zani/atampa 包裹布、头绳和披肩组合。</p>
+        <p class="evidence-caption"><b>图片说明：</b>左图 Igbo 样本展示红帽、珠饰和 Isiagu 式图案上衣；中图 Yoruba 样本展示紫色 Agbada、Fila、Gele 与珊瑚珠饰的成套搭配；右图 Hausa-Fulani 样本展示 Babban riga、传统帽、头巾和包裹布的家庭式组合。三张图分别对应三个民族，避免把尼日利亚传统服饰混成一个笼统标签。</p>
+        <div class="conclusion-card"><b>结论判断：</b>传统服饰不能只写“非洲服装”，应按民族、场合、廓形和具体单品名称拆分标注；Igbo、Yoruba、Hausa-Fulani 的视觉符号需要分开管理。</div>
+      </div>
+    </article><div class="feature-subhead"><h3>派对 / 重要场合着装</h3><p>这里的派对指社交聚会、庆典、发布会、红毯或重要活动。同一场合下，网红/名流会更强调礼服、妆发和精修姿态，普通人则更可能保留生活化和功能性穿着。</p></div><article class="feature-card">
+      <div class="feature-image contain" style="--pos:center"><img src="assets/images/clothing-kol-party-fix-01.jpg" alt="KOL 礼服 / 派对造型"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">服饰装扮</span><span class="tag gold">人工修正PDF补充图</span></div>
+        <h3>KOL 礼服 / 派对造型</h3>
+        <p class="feature-note"><b>观点说明：</b>在社交聚会、庆典或发布会语境中，KOL/名流样本会用礼服、鞋履、妆发和姿态制造更强社媒识别。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本完整展示粉色礼服、鞋履、首饰、妆发和全身姿态。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为 KOL 礼服/派对造型的代表证据图。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image contain" style="--pos:center"><img src="assets/images/clothing-minimal-fashion-fix-01.jpg" alt="高端广告模特 / 极简时装"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">服饰装扮</span><span class="tag gold">人工修正PDF补充图</span></div>
+        <h3>高端广告模特 / 极简时装</h3>
+        <p class="feature-note"><b>观点说明：</b>高端广告模特更强调面料、剪裁、克制色彩和姿态控制，与普通派对装区分明显。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本展示极简外套、包袋、克制色调和模特化姿态，服装主体完整可见。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为高端广告模特/极简时装标签证据图。</div>
+      </div>
+    </article>
+<article class="feature-card">
+      <div class="feature-image contain" style="--pos:center"><img src="assets/images/clothing-aso-ebi-wedding-collage-01.jpg" alt="Aso Ebi 婚礼统一着装文化"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">服饰装扮</span><span class="tag gold">婚礼 / Aso Ebi</span></div>
+        <h3>Aso Ebi 婚礼统一着装文化</h3>
+        <p class="feature-note"><b>观点说明：</b>在婚礼、命名仪式等场合，宾客会按统一色系或统一面料定制服装，形成 Aso Ebi 式群体着装：同色系、同面料建立团体身份，各自剪裁和头巾造型保留个体差异。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该组证据展示紫色系、白银系、绿色系婚礼群体照：统一面料和色系建立场合正式度，Gele 头巾、礼服剪裁和珠饰则让每个人保留不同造型。</p>
+        <div class="conclusion-card"><b>结论判断：</b>Aso Ebi 可作为婚礼、命名仪式和大型庆典的群体服饰标签；它强调统一色系/面料和身份归属，不应作为日常人物默认配置。</div>
+      </div>
+    </article></div>
+  <div class="dimension-summary"><b>维度小结：</b>服饰应收束为视觉可判断的关键词：温暖气候下的 T 恤/牛仔裤/休闲运动装，都市女性运动套装与运动鞋、男性印花衬衫与休闲裤，星期五 Ankara 本土服装，Aso Ebi 统一着装，Yoruba 的 Gele/Agbada/Buba/Iro/Sokotos，Hausa/Fulani 的 Babban riga 与 zani/atampa，Igbo 的 Isiagu 图案上衣，以及礼服/派对材质与剪裁。</div>
+</section>
+<section class="dimension-section" id="culture-accessories">
+  <div class="section-head">
+    <div><p class="eyebrow-dark">文化性特征 3/3</p><h2>配饰</h2></div>
+    <p>头巾、Gele、Fila 帽、红帽、珠饰、墨镜、首饰和包袋会直接改变人物的身份、场合和精致度判断；它们属于造型配饰，不属于发型，也不应脱离场景默认添加。</p>
+  </div>
+  <div class="feature-grid"><div class="feature-subhead"><h3>配饰：头巾、Gele、帽子与首饰</h3><p>头巾、Gele、帽子、首饰、墨镜和包袋都归入配饰层；它们会改变人物身份和场景语气，但不属于发型本身。</p></div><article class="feature-card">
+      <div class="feature-image dual">
+        <figure style="--pos:center 28%"><img src="assets/images/gele-ceremony-clothing-unique-01.jpg" alt="Gele 头巾庆典服饰案例"><figcaption>庆典服饰</figcaption></figure>
+        <figure style="--pos:center 28%"><img src="assets/images/gele-headwrap-accessory-unique-01.jpg" alt="Gele 头巾配饰案例"><figcaption>头饰配件</figcaption></figure>
+      </div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">服饰装扮</span><span class="tag gold">配饰</span></div>
+        <h3>Gele 头巾 / 庆典配饰</h3>
+        <p class="feature-note"><b>观点说明：</b>Gele 是传统、婚礼和正式庆典场景中识别度很高的头饰配件，通常与妆面、珠饰和传统服饰共同出现；它应归入配饰/庆典造型，而不是发型，也不能默认加到日常人物上。</p>
+        <p class="evidence-caption"><b>图片说明：</b>左图保留服装、珠饰和庆典场景关系，右图突出 Gele 头巾本身的体量、褶皱和配饰属性，两张图共同说明 Gele 的场景边界与配饰归类。</p>
+        <div class="conclusion-card"><b>结论判断：</b>Gele 可作为传统庆典或正式场合标签；普通都市、广告或日常人物不应默认添加。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image dual">
+        <figure style="--pos:center 8%"><img style="object-fit:contain" src="assets/images/hat-fila-ceremony-male-01.jpg" alt="Fila 帽子男性庆典配饰案例一"><figcaption>黑金 Fila</figcaption></figure>
+        <figure style="--pos:center 10%"><img style="object-fit:contain" src="assets/images/hat-fila-ceremony-male-02.jpg" alt="Fila 帽子男性庆典配饰案例二"><figcaption>多色 Fila</figcaption></figure>
+      </div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">服饰装扮</span><span class="tag gold">配饰</span></div>
+        <h3>Fila 帽子</h3>
+        <p class="feature-note"><b>观点说明：</b>Fila 帽是尼日利亚男性在传统、庆典和正式场合中识别度很高的头饰，通常与传统长袍（Agbada/Buba）、珠饰共同出现，是配饰层面的元素，不属于发型本身。</p>
+        <p class="evidence-caption"><b>图片说明：</b>两张样本都把 Fila 帽置于头部视觉中心：图一展示黑金色 Fila 与绿色传统条纹长袍、珊瑚珠饰和权杖的搭配；图二展示多色 Fila 与白色传统服饰在社交/庆典场景中的搭配，可支撑 Fila 帽作为男性庆典配饰的判断。</p>
+        <div class="conclusion-card"><b>结论判断：</b>Fila 帽可作为男性传统庆典或正式场合的配饰标签；不应默认加到日常/都市人物身上。</div>
+      </div>
+    </article><article class="feature-card">
+      <div class="feature-image cover" style="--pos:center 28%"><img src="assets/images/accessories-jewelry-sunglasses-male-01.png" alt="首饰 / 墨镜 / 包袋等造型配件"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">服饰装扮</span><span class="tag gold">尼日利亚广告图参考</span></div>
+        <h3>首饰 / 墨镜 / 包袋等造型配件</h3>
+        <p class="feature-note"><b>观点说明：</b>配件在广告、音乐视觉和 KOL 图像中强化身份感，常见墨镜、首饰、包袋或帽饰。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本同时呈现墨镜、耳饰、手表、戒指、项链和亮面服装细节，可支撑造型配件强化人物身份感的判断。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为造型增强标签，但必须与服装主体和人物身份共同判断。</div>
+      </div>
+    </article>
+<article class="feature-card">
+      <div class="feature-image contain" style="--pos:center"><img src="assets/images/clothing-gele-occasion-fix-01.jpg" alt="红帽 / 珠饰"></div>
+      <div class="feature-body">
+        <div class="tag-row"><span class="tag green">服饰装扮</span><span class="tag gold">配饰 / 场合符号</span></div>
+        <h3>红帽 / 珠饰</h3>
+        <p class="feature-note"><b>观点说明：</b>红帽和珠饰属于身份与传统场合符号，适合作为文化元素记录，但不作为普通人物默认配置。</p>
+        <p class="evidence-caption"><b>图片说明：</b>该样本展示头饰、珊瑚珠项链与手串，以及成套传统庆典服饰，可用于支撑珠饰与传统装扮判断。</p>
+        <div class="conclusion-card"><b>结论判断：</b>可作为珠饰与传统装扮证据；红帽元素仍建议后续补充更明确样本。</div>
+      </div>
+    </article></div>
+  <div class="dimension-summary"><b>维度小结：</b>配饰需要按性别、场合和身份边界使用：Gele 偏女性婚礼/庆典，Fila 帽和红帽偏男性传统/正式场合，珠饰、墨镜、包袋等则用于强化社交、舞台或商业造型语气。</div>
+</section>
+
+    <section>
+      <div class="section-head"><div><p class="eyebrow-dark">Final Findings</p><h2>结论性报告</h2></div><p>以下总结用于后续 prompt 标签词库、LoRA 素材库和本地化人物标准沉淀，不进入具体广告投放判断。</p></div>
+      <div class="grid grid-3">
+        <div class="conclusion-panel"><h3>1. 稳定特征</h3><ul><li>共性结论：肤色跨度明显，不可单一化；色阶、底调、光泽和肤质层次需要共同标注。</li><li>共性结论：五官应先看清晰骨相，再看多样脸型、鼻翼/鼻根与饱满唇形；下颌只是脸型下半部分的补充刻画。</li><li>共性结论：深肤色表现要保留自然光泽、暗部层次和真实肤质，而不是人为叠加强高光或磨成平面。</li><li>差异结论：发型体系需要男女分区，男性短发/渐变/胡须打理与女性假发/编发/盘发不能混排。</li><li>差异结论：服饰装扮和体型会随身份、场景、样本类型变化；传统符号、Gele、珠饰、彩绘和疤痕不能作为普通人物默认配置。</li></ul></div>
+        <div class="conclusion-panel"><h3>2. 三类样本差异</h3><ul><li>KOL / 明星：更精致、更社媒化，更重妆发和造型。</li><li>普罗大众：更自然、更生活化，穿衣和肤质更真实。</li><li>广告模特：骨相更清晰，造型更时装化，画面更标准化。</li></ul></div>
+        <div class="conclusion-panel"><h3>3. 后续资产库建议</h3><ul><li>将两大模块、七个子项继续拆成 prompt 标签词库。</li><li>筛选高代表性图片作为 LoRA 训练素材。</li><li>建立正向标签和负向标签，避免刻板化生成。</li><li>按 KOL、普罗大众、广告模特分别建立三套人物模板。</li><li>继续补充不同年龄、体型和职业状态的普通人样本。</li></ul></div>
+      </div>
+    </section>
+
+    <div class="footer">Local image evidence only · assets/images/ · nigeria-localized-model-feature-atlas.html</div>
+  </main>
+</body>
+</html>
